@@ -1,0 +1,148 @@
+<html>
+
+<body>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+        }
+
+        .x {
+            color: blue;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .o {
+            color: red;
+            font-size: 36px;
+            text-align: center;
+        }
+    </style>
+
+    <table>
+        <tr>
+            <td id="cell-1"></td>
+            <td id="cell-2"></td>
+            <td id="cell-3"></td>
+        </tr>
+        <tr>
+            <td id="cell-4"></td>
+            <td id="cell-5"></td>
+            <td id="cell-6"></td>
+        </tr>
+        <tr>
+            <td id="cell-7"></td>
+            <td id="cell-8"></td>
+            <td id="cell-9"></td>
+        </tr>
+    </table>
+
+    <button id="reset-button">Reset</button>
+    <button id="x-button">X</button>
+    <button id="o-button">O</button>
+</body>
+
+<script type="application/javascript">
+    let currentPlayer = "X";
+    let gameWon = false;
+    let gameDraw = false;
+
+    const cells = document.querySelectorAll("td");
+    cells.forEach(cell => {
+        cell.addEventListener("click", handleClick);
+    });
+
+    const resetButton = document.querySelector("#reset-button");
+    resetButton.addEventListener("click", handleReset);
+
+    const xButton = document.querySelector("#x-button");
+    xButton.addEventListener("click", () => {
+        currentPlayer = "X";
+    });
+
+    const oButton = document.querySelector("#o-button");
+    oButton.addEventListener("click", () => {
+        currentPlayer = "O";
+    });
+
+    function handleClick(event) {
+        if (gameWon || gameDraw) {
+            return;
+        }
+        if (event.target.textContent === "") {
+            event.target.textContent = currentPlayer;
+            checkForWin();
+            checkForDraw();
+            switchPlayer();
+        }
+    }
+
+    function handleReset() {
+        cells.forEach(cell => {
+            cell.textContent = "";
+        });
+        gameWon = false;
+        gameDraw = false;
+    }
+
+    function switchPlayer() {
+        if (currentPlayer === "X") {
+            currentPlayer = "O";
+        } else {
+            currentPlayer = "X";
+        }
+    }
+
+    function checkForWin() {
+        // Check rows
+        for (let i = 0; i < 9; i += 3) {
+            if (cells[i].textContent === cells[i + 1].textContent &&
+                cells[i].textContent === cells[i + 2].textContent && cells[i].textContent !== "") {
+                gameWon = true;
+                return;
+            }
+        }
+        // Check columns
+        for (let i = 0; i < 3; i++) {
+            if (cells[i].textContent === cells[i + 3].textContent &&
+                cells[i].textContent === cells[i + 6].textContent && cells[i].textContent !== "") {
+                gameWon = true;
+                return;
+            }
+        }
+        // Check diagonals
+        if (cells[0].textContent === cells[4].textContent &&
+            cells[0].textContent === cells[8].textContent && cells[0].textContent !== "") {
+            gameWon = true;
+            return;
+        }
+        if (cells[2].textContent === cells[4].textContent &&
+            cells[2].textContent === cells[6].textContent && cells[2].textContent !== "") {
+            gameWon = true;
+            return;
+        }
+    }
+
+    function checkForDraw() {
+        let emptyCells = 0;
+        cells.forEach(cell => {
+            if (cell.textContent === "") {
+                emptyCells++;
+            }
+        });
+        if (emptyCells === 0 && gameWon === false) {
+            gameDraw = true;
+        }
+    }
+
+    watch
+</script>
+
+</html>
